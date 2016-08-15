@@ -17,3 +17,6 @@ perf*csv
 /build
 /dist
 /src
+/node_modules
+/components
+/static

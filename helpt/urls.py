@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from projects.views import front_page
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', front_page),
 ]

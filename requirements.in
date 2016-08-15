@@ -3,3 +3,7 @@ Django
 django-allauth
 pytest
 pytest-django
+django_compressor
+django-libsass
+django-compressor-autoprefixer
+-e git+https://github.com/juyrjola/django-bower.git#egg=django-bower
