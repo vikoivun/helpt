@@ -12,6 +12,8 @@ class DataSource(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=20, choices=TYPES)
 
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='DataSourceUser')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -34,16 +36,25 @@ class GitHubDataSource(DataSource):
     token = models.CharField(max_length=100)
 
     def __init__(self, *args, **kwargs):
-        self.type = 'github'
         super().__init__(*args, **kwargs)
+        self.type = 'github'
 
 
 class DataSourceUser(models.Model):
     data_source = models.ForeignKey(DataSource, db_index=True,
-                                    related_name='users')
+                                    related_name='data_source_users')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True,
-                             related_name='data_sources')
+                             related_name='data_source_users')
+
+    username = models.CharField(max_length=100, null=True, blank=True, db_index=True)
     origin_id = models.CharField(max_length=100, db_index=True)
+
+    class Meta:
+        unique_together = (
+            ('data_source', 'user'),
+            ('data_source', 'username'),
+            ('data_source', 'origin_id'),
+        )
 
     def __str__(self):
         return "{}: {} as {}".format(self.data_source, self.user, self.origin_id)
@@ -77,9 +88,17 @@ class Workspace(models.Model):
     def __str__(self):
         return self.name
 
-    def read_tasks(self):
+    def sync_tasks(self):
         adapter = self.data_source.adapter
-        adapter.read_tasks(self)
+        adapter.sync_tasks(self)
+
+
+class TaskQuerySet(models.QuerySet):
+    def open(self):
+        return self.filter(state='open')
+
+    def closed(self):
+        return self.filter(state='closed')
 
 
 class Task(models.Model):
@@ -96,14 +115,40 @@ class Task(models.Model):
     origin_id = models.CharField(max_length=100, db_index=True)
     state = models.CharField(max_length=10, choices=STATES, db_index=True)
 
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    closed_at = models.DateTimeField(null=True, blank=True)
+
+    assigned_users = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                            through='TaskAssignment',
+                                            blank=True)
+
+    objects = TaskQuerySet.as_manager()
+
     def __str__(self):
         return "{} ({})".format(self.name, self.workspace)
 
+    def set_state(self, new_state):
+        if new_state == self.state:
+            return
+
+        assert new_state in [x[0] for x in self.STATES]
+        self.state = new_state
+        self.save(update_fields=['state'])
+
+    class Meta:
+        ordering = ['workspace', 'origin_id']
+        unique_together = [('workspace', 'origin_id')]
+        get_latest_by = 'created_at'
+
 
 class TaskAssignment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='assigned_tasks',
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='task_assignments',
                              db_index=True)
-    task = models.ForeignKey(Task, related_name='assigned_users', db_index=True)
+    task = models.ForeignKey(Task, related_name='assignments', db_index=True)
 
     def __str__(self):
         return "{} assigned to {}".format(self.task, self.user)
+
+    class Meta:
+        unique_together = [('user', 'task')]
