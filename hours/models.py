@@ -1,3 +1,14 @@
+from django.conf import settings
 from django.db import models
 
-# Create your models here.
+
+class Entry(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, db_index=True,
+                             related_name='entries')
+    date = models.DateField(db_index=True)
+    task = models.ForeignKey('projects.Task', db_index=True, related_name='entries')
+    minutes = models.PositiveIntegerField()
+
+    def __str__(self):
+        return "{}: {:2f}h on {} by {}".format(self.date, self.minutes / 60.0,
+                                               self.task, self.user)
