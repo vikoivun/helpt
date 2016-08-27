@@ -1,4 +1,4 @@
-{% load static compress %}
+{% load static %}
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -10,10 +10,6 @@
         <title>{# FIXME #}</title>
         <meta name="description" content="{# FIXME #}" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-        {% compress css %}
-        <link rel="stylesheet" type="text/x-scss" href="{% static "css/main.scss" %}" />
-        {% endcompress %}
     </head>
 
     <body role="document" class="{% block body_class %}{% endblock %}">

@@ -31,9 +31,6 @@ INSTALLED_APPS = [
     'hours',
     'projects',
 
-    'compressor',
-    'djangobower',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -138,33 +135,14 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
-)
-COMPRESS_CSS_FILTERS = (
-    'compressor.filters.css_default.CssAbsoluteFilter',
-    'django_compressor_autoprefixer.AutoprefixerFilter',
-)
-COMPRESS_ENABLED = False
-COMPRESS_AUTOPREFIXER_BINARY = os.path.join(BASE_DIR, 'node_modules/.bin/postcss')
-
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components/')
-BOWER_PATH = os.path.join(BASE_DIR, 'node_modules/.bin/bower')
-BOWER_INSTALLED_APPS = [
-    'bourbon#<5.0',
-    'bootstrap-sass#<4.0',
-    'jquery#<3.0',
-]
-
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'djangobower.finders.BowerFinder',
-    'compressor.finders.CompressorFinder',
 ]
 
 
 # Social auth
+SITE_ID = 1
 AUTH_USER_MODEL = 'users.User'
 SOCIALACCOUNT_PROVIDERS = {
     'helsinki': {
