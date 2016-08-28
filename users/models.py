@@ -10,4 +10,4 @@ class Organization(models.Model):
 
 
 class User(AbstractUser):
-    organization = models.ForeignKey(Organization, db_index=True)
+    organization = models.ForeignKey(Organization, db_index=True, null=True, blank=True)

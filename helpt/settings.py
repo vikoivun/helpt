@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'helusers.providers.helsinki',
 
+    'rest_framework',
+    'dynamic_rest',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sites',
@@ -105,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -142,6 +144,7 @@ STATICFILES_FINDERS = [
 
 
 # Social auth
+#
 SITE_ID = 1
 AUTH_USER_MODEL = 'users.User'
 SOCIALACCOUNT_PROVIDERS = {
@@ -153,6 +156,19 @@ LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'helusers.providers.helsinki.provider.SocialAccountAdapter'
 
+# REST Framework
+#
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ),
+}
+
+DYNAMIC_REST = {
+    'ENABLE_LINKS': False,
+}
 
 # local_settings.py can be used to override environment-specific settings
 # like database and email that differ between development and production.

@@ -5,3 +5,5 @@ pytest
 pytest-django
 requests
 requests_cache
+djangorestframework
+markdown
