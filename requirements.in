@@ -7,3 +7,4 @@ requests
 requests_cache
 djangorestframework
 markdown
+dynamic-rest

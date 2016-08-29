@@ -7,8 +7,10 @@
 -e git+https://github.com/City-of-Helsinki/django-helusers.git#egg=django-helusers
 defusedxml==0.4.1         # via python3-openid
 django-allauth==0.27.0
-Django==1.10              # via django-allauth
-djangorestframework==3.4.6
+Django==1.10              # via django-allauth, dynamic-rest
+djangorestframework==3.4.0
+dynamic-rest==1.5.0
+inflection==0.3.1         # via dynamic-rest
 markdown==2.6.6
 oauthlib==1.1.2           # via requests-oauthlib
 py==1.4.31                # via pytest
