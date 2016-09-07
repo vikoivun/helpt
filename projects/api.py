@@ -22,6 +22,7 @@ class ProjectSerializer(serializers.DynamicModelSerializer):
     class Meta:
         model = Project
         name = 'project'
+        plural_name = 'project'
 
 
 @register_view
@@ -34,6 +35,7 @@ class WorkspaceSerializer(serializers.DynamicModelSerializer):
     class Meta:
         model = Workspace
         name = 'workspace'
+        plural_name = 'workspace'
 
 
 @register_view
@@ -49,7 +51,7 @@ class TaskSerializer(serializers.DynamicModelSerializer):
     class Meta:
         model = Task
         name = 'task'
-
+        plural_name = 'task'
 
 @register_view
 class TaskViewSet(viewsets.DynamicModelViewSet):

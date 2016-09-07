@@ -21,6 +21,7 @@ class UserSerializer(serializers.DynamicModelSerializer):
     class Meta:
         model = User
         name = 'user'
+        plural_name = 'user'
 
 
 @register_view
