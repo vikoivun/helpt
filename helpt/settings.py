@@ -163,6 +163,7 @@ SOCIALACCOUNT_ADAPTER = 'helusers.providers.helsinki.provider.SocialAccountAdapt
 #
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': ('helpt.auth.HelptSessionAuthentication',),
     'PAGE_SIZE': 100,
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
