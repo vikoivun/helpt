@@ -1,5 +1,5 @@
 from dynamic_rest import serializers, viewsets
-from .models import Task, Workspace, Project
+from .models import Task, Workspace, Project, DataSource
 from users.api import UserSerializer
 
 
@@ -31,7 +31,20 @@ class ProjectViewSet(viewsets.DynamicModelViewSet):
     serializer_class = ProjectSerializer
 
 
+class DataSourceSerializer(serializers.DynamicModelSerializer):
+    class Meta:
+        model = DataSource
+        name = 'data_source'
+        plural_name = 'data_source'
+
+@register_view
+class DataSourceViewSet(viewsets.DynamicModelViewSet):
+    queryset = DataSource.objects.all()
+    serializer_class = DataSourceSerializer
+
+
 class WorkspaceSerializer(serializers.DynamicModelSerializer):
+    data_source = serializers.DynamicRelationField(DataSourceSerializer)
     class Meta:
         model = Workspace
         name = 'workspace'
