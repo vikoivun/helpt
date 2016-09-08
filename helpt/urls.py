@@ -32,6 +32,7 @@ for view in hour_views:
     router.register(view['name'], view['class'], base_name=view.get('base_name'))
 
 urlpatterns = [
+    url('^', include('django.contrib.auth.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^v1/', include(router.urls, namespace='v1')),
     url(r'^$', front_page),
