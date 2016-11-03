@@ -1,4 +1,6 @@
 from dynamic_rest import serializers, viewsets
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 from .models import Entry
 from users.api import UserSerializer
 
@@ -27,6 +29,7 @@ class EntrySerializer(serializers.DynamicModelSerializer):
         plural_name = 'entry'
 
 @register_view
+@permission_classes((IsAuthenticated, ))
 class EntryViewSet(viewsets.DynamicModelViewSet):
     queryset = Entry.objects.all()
     serializer_class = EntrySerializer
